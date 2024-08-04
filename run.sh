@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ##### SET FOLLOWING VARS #####
-CONDA_DIR="/home/nimrod/src/miniconda3"
+CONDA_DIR="/home/$USER/src/miniconda3"
 SERVER_NAME="192.168.0.187"
 ###### END OF VARIABLES ######
 
