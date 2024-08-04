@@ -33,9 +33,12 @@ def start(prompt, voice):
         audio_array = generate_audio(prompt)
     else:   
         audio_array = generate_audio(prompt, history_prompt=npz_names[voice])
-        
-    write_wav("../outputs/audio-output.wav", SAMPLE_RATE, audio_array)
-    return "../outputs/audio-output.wav"
+    
+    output_dir = os.path.dirname(os.getcwd()) + "/outputs"
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    write_wav(f"{output_dir}/audio-output.wav", SAMPLE_RATE, audio_array)
+    return f"{output_dir}/audio-output.wav"
 
 with gr.Blocks() as demo:
 
@@ -48,12 +51,12 @@ with gr.Blocks() as demo:
 
     with gr.Row():
         voice = gr.Dropdown(npz_names, type="index", label="Voice", info="Select the voice")
-        launch_button = gr.Button("Launch")
+        generate_button = gr.Button("Generate")
   
     with gr.Column():
         output = gr.Audio(label="Result")
         
-    launch_button.click(
+    generate_button.click(
         start,
         [prompts, voice],
         [output],
