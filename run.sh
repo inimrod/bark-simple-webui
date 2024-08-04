@@ -2,7 +2,7 @@
 
 ##### SET FOLLOWING VARS #####
 CONDA_DIR="/home/$USER/src/miniconda3"
-SERVER_NAME="192.168.0.187"
+SERVER_NAME="0.0.0.0"
 ###### END OF VARIABLES ######
 
 
@@ -57,6 +57,11 @@ fi
 conda activate $CONDA_ENV_DIR || echo "Miniconda hook not found."
 
 # run setup.py
-echo "Running setup.py"
 export GRADIO_SERVER_NAME=$SERVER_NAME
-python setup.py
+if [ -n "${RUNNING_IN_SYSTEMD}" ]; then
+    echo "Running inside systemd"
+    python setup.py 2>&1 | systemd-cat -t "bark-gradio"
+else
+    echo "Running outside systemd"
+    python setup.py
+fi
